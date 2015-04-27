@@ -5,7 +5,8 @@
     xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/WEB-INF/templates/template-console.xhtml"
-    xmlns:h="http://xmlns.jcp.org/jsf/html">
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:param name="pageTitle" value="Create New User"/>
 
@@ -40,7 +41,9 @@
                         required="true"
                         maxlength="40"
                         p:placeholder="First Name"
-                        styleClass="form-control"/>
+                        styleClass="form-control">
+                        <f:validateLength minimum="6" maximum="80"/>
+                    </h:inputText>
                 </div>
                 <div class="col-md-2">              
                     <h:inputText
@@ -49,7 +52,9 @@
                         required="true"
                         maxlength="40"
                         p:placeholder="Last Name"
-                        styleClass="form-control"/>
+                        styleClass="form-control">
+                        <f:validateLength minimum="1" maximum="40"/>
+                    </h:inputText>
                 </div>
             </div>
             <div class="form-group">
@@ -58,9 +63,11 @@
                     <h:inputSecret
                         id="password"
                         value="#{createUserBean.password}"
-                        maxlength="80"
+                        maxlength="40"
                         p:placeholder="Password"
-                        styleClass="form-control"/>
+                        styleClass="form-control">
+                        <f:validateLength minimum="6" maximum="40"/>
+                    </h:inputSecret>
                 </div>
             </div>
             <div class="form-group">
