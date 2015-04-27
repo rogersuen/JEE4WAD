@@ -10,5 +10,6 @@
     <module>usermanager-ear</module>
     <module>usermanager-web</module>
     <module>usermanager-ejb</module>
+    <module>usermanager-model</module>
   </modules>
 </project>
