@@ -22,6 +22,8 @@ public class GreetingServlet extends HttpServlet {
 
             // then write the data of the response
             out.println("<body  bgcolor=\"#ffffff\">"
+                    + "<img src=\"resources/images/duke.waving.gif\" "
+                    + "alt=\"Duke waving his hand\">"
                     + "<form method=\"get\">"
                     + "<h2>Hello, my name is Duke. What's yours?</h2>"
                     + "<input title=\"My name is: \" type=\"text\" name=\"username\" size=\"25\"/>"
