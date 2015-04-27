@@ -10,7 +10,14 @@
 
     <ui:define name="content">
         <h2>Create New User</h2>
-        <h:form styleClass="form-horizontal">
+        <h:form id="createUserForm" styleClass="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-2">
+                    <h:messages
+                        styleClass="alert alert-danger" 
+                        style="list-style: none"/>
+                </div>
+            </div>
             <div class="form-group">
                 <h:outputLabel value="Email" for="email" styleClass="control-label col-md-2"/>
                 <div class="col-md-4">              
