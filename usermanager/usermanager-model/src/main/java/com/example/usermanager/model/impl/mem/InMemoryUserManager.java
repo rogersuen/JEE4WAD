@@ -1,6 +1,7 @@
 package com.example.usermanager.model.impl.mem;
 
 import com.example.usermanager.model.User;
+import com.example.usermanager.model.UserException;
 import com.example.usermanager.model.UserManager;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,6 +59,10 @@ public class InMemoryUserManager implements UserManager {
     public User addUser(User user) {
         if (user == null) {
             throw new IllegalArgumentException("user cannot be null");
+        }
+
+        if (findUserByEmail(user.getEmail()) != null) {
+            throw new UserException("A user with the email address already exists.");
         }
 
         users.put(user.getEmail(), new User(user));

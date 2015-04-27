@@ -1,9 +1,12 @@
 package com.example.usermanager.web;
 
 import com.example.usermanager.model.User;
+import com.example.usermanager.model.UserException;
 import com.example.usermanager.model.impl.mem.InMemoryUserManager;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 @Named
 @RequestScoped
@@ -48,7 +51,14 @@ public class CreateUserBean {
     
     public String createUser() {
         User user = new User(email, firstName, lastName, password);
-        InMemoryUserManager.getInstance().addUser(user);
+        try {
+            InMemoryUserManager.getInstance().addUser(user);
+        } catch (UserException ue) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, ue.getMessage(), null);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+
         return "BrowseUsers?faces-redirect=true";
     }
 }
