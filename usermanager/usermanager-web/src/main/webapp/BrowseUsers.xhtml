@@ -4,18 +4,26 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="/WEB-INF/templates/template-console.xhtml"
-    xmlns:h="http://xmlns.jcp.org/jsf/html">
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:param name="pageTitle" value="Browse Users"/>
 
     <ui:define name="content">
         <h2>Browse Users</h2>
-        <h:dataTable value="#{browseUsersBean.allUsers}" var="user">
+        <h:dataTable value="#{browseUsersBean.allUsers}" 
+                     var="user" 
+                     styleClass="table table-striped table-hover">
             <h:column>
+                <f:facet name="header">Email</f:facet>
                 <h:outputText value="#{user.email}"/>
             </h:column>
             <h:column>
+                <f:facet name="header">First Name</f:facet>
                 <h:outputText value="#{user.firstName}"/>
             </h:column>
             <h:column>
+                <f:facet name="header">Last Name</f:facet>
                 <h:outputText value="#{user.lastName}"/>
             </h:column>
         </h:dataTable>
