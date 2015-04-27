@@ -16,9 +16,15 @@
             <div class="form-group">
                 <div class="col-md-4 col-md-offset-2">
                     <h:messages
+                        globalOnly="true"
                         styleClass="alert alert-danger" 
                         style="list-style: none"/>
                 </div>
+            </div>
+            <div class="form-group">
+                <h:message 
+                    for="email" 
+                    errorClass="col-md-4 col-md-offset-2 text-danger"/>
             </div>
             <div class="form-group">
                 <h:outputLabel value="Email" for="email" styleClass="control-label col-md-2"/>
@@ -31,6 +37,16 @@
                         p:placeholder="Email"
                         styleClass="form-control"/>
                 </div>
+            </div>
+            <div class="form-group">
+                <h:message 
+                    for="firstName" 
+                    errorClass="col-md-4 col-md-offset-2 text-danger"/>
+            </div>
+            <div class="form-group">
+                <h:message 
+                    for="lastName" 
+                    errorClass="col-md-4 col-md-offset-2 text-danger"/>
             </div>
             <div class="form-group">
                 <h:outputLabel value="Full Name" for="firtName" styleClass="control-label col-md-2"/>
@@ -56,6 +72,11 @@
                         <f:validateLength minimum="1" maximum="40"/>
                     </h:inputText>
                 </div>
+            </div>
+            <div class="form-group">
+                <h:message 
+                    for="password" 
+                    errorClass="col-md-4 col-md-offset-2 text-danger"/>
             </div>
             <div class="form-group">
                 <h:outputLabel value="Password" for="password" styleClass="control-label col-md-2"/>
