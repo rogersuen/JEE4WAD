@@ -11,6 +11,11 @@
 
     <ui:define name="content">
         <h2>Browse Users</h2>
+        <div>
+            <div class="pull-right">
+                <h:link value="New" outcome="CreateUser" styleClass="btn btn-primary"/>
+            </div>
+        </div>
         <h:dataTable value="#{browseUsersBean.allUsers}" 
                      var="user" 
                      styleClass="table table-striped table-hover">
