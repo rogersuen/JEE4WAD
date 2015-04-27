@@ -1,5 +1,7 @@
 package com.example.usermanager.web;
 
+import com.example.usermanager.model.User;
+import com.example.usermanager.model.impl.mem.InMemoryUserManager;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 
@@ -45,6 +47,8 @@ public class CreateUserBean {
     }
     
     public String createUser() {
-        return null;
+        User user = new User(email, firstName, lastName, password);
+        InMemoryUserManager.getInstance().addUser(user);
+        return "BrowseUsers?faces-redirect=true";
     }
 }
