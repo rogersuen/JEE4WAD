@@ -14,16 +14,17 @@
     <ui:define name="body">
         <h2>Create New User</h2>
         <h:form id="createUserForm" styleClass="form-horizontal">
-            <div class="form-group">
-                <div class="col-sm-4 col-sm-offset-2">
-                    <h:messages
-                        styleClass="alert alert-danger" 
-                        style="list-style: none"/>
-                </div>
+            <div class="row">
+                <h:messages
+                    id="messages"
+                    styleClass="col-sm-4 col-sm-offset-2"
+                    errorClass="alert alert-danger"
+                    infoClass="alert alert-success"
+                    style="list-style: none"/>
             </div>
             <div class="form-group">
                 <h:outputLabel value="Email" for="email" styleClass="control-label col-sm-2"/>
-                <div class="col-sm-4">              
+                <div class="col-sm-4">
                     <h:inputText
                         id="email"
                         value="#{createUserBean.email}"
@@ -33,6 +34,16 @@
                         styleClass="form-control">
                         <f:validateLength minimum="6" maximum="80"/>
                     </h:inputText>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 col-sm-offset-2">
+                    <h:commandButton 
+                        value="Check Availability" 
+                        actionListener="#{createUserBean.checkAvailability()}"
+                        styleClass="btn btn-info">
+                        <f:ajax execute="email" render="email messages"/>
+                    </h:commandButton>
                 </div>
             </div>
             <div class="form-group">

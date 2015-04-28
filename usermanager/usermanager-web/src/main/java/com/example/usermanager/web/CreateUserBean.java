@@ -11,7 +11,7 @@ import javax.faces.context.FacesContext;
 @Named
 @RequestScoped
 public class CreateUserBean {
-    
+
     private String email;
     private String displayName;
     private String password;
@@ -39,7 +39,19 @@ public class CreateUserBean {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
+    public void checkAvailability() {
+        User user = InMemoryUserManager.getInstance().findUserByEmail(email);
+        FacesMessage msg;
+        if (user == null) {
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "The email is available.", null);
+        } else {
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "The email is NOT available.", null);
+        }
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
     public String createUser() {
         User user = new User(email, displayName, password);
         try {
