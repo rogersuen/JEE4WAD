@@ -4,8 +4,14 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+@NamedQueries({
+    @NamedQuery(name = "User.getAllUsers", query = "SELECT u FROM User u"),
+    @NamedQuery(name="User.findUserByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
+})
 @Entity
 @Table(name = "JEE4WAD_USER")
 public class User implements Serializable {

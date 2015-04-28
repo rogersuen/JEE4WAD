@@ -1,21 +1,20 @@
 package com.example.usermanager.web;
 
 import com.example.usermanager.model.User;
+import com.example.usermanager.model.UserException;
+import com.example.usermanager.model.UserManager;
+import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.TypedQuery;
 
 @Named
 @RequestScoped
 public class CreateUserBean {
 
-    @PersistenceUnit
-    private EntityManagerFactory emf;
+    @EJB
+    private UserManager userManager;
 
     private String email;
     private String displayName;
@@ -62,41 +61,21 @@ public class CreateUserBean {
 
     public String createUser() {
         User user = new User(email, displayName, password);
-        if (!isEmailAvailable(email)) {
+
+        try {
+            userManager.addUser(user);
+        } catch (UserException e) {
             FacesMessage msg = new FacesMessage(
                     FacesMessage.SEVERITY_ERROR,
-                    "A user with the email address already exists.",
+                    e.getMessage(),
                     null);
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return null;
         }
-
-        EntityManager em = null;
-        try {
-            em = emf.createEntityManager();
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-
         return "BrowseUsers?faces-redirect=true";
     }
 
     private boolean isEmailAvailable(String email) {
-        EntityManager em = null;
-        try {
-            em = emf.createEntityManager();
-            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
-            query.setParameter("email", email);
-            return query.getResultList().isEmpty();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+        return (userManager.findUserByEmail(email) == null);
     }
 }
