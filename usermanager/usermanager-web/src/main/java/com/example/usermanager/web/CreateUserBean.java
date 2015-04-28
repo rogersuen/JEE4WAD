@@ -7,10 +7,17 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
+import javax.persistence.TypedQuery;
 
 @Named
 @RequestScoped
 public class CreateUserBean {
+
+    @PersistenceUnit
+    private EntityManagerFactory emf;
 
     private String email;
     private String displayName;
@@ -45,12 +52,26 @@ public class CreateUserBean {
             return;
         }
 
-        User user = InMemoryUserManager.getInstance().findUserByEmail(email);
+        EntityManager em = null;
+        boolean found = false;
+        try {
+            em = emf.createEntityManager();
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+            query.setParameter("email", email);
+            if (!query.getResultList().isEmpty()) {
+                found = true;
+            }
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+
         FacesMessage msg;
-        if (user == null) {
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "The email is available.", null);
-        } else {
+        if (found) {
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "The email is NOT available.", null);
+        } else {
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "The email is available.", null);
         }
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -58,12 +79,20 @@ public class CreateUserBean {
 
     public String createUser() {
         User user = new User(email, displayName, password);
+        EntityManager em = null;
         try {
-            InMemoryUserManager.getInstance().addUser(user);
+            em = emf.createEntityManager();
+            em.getTransaction().begin();
+            em.persist(user);
+            em.getTransaction().commit();
         } catch (UserException ue) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, ue.getMessage(), null);
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return null;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
 
         return "BrowseUsers?faces-redirect=true";

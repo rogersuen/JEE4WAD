@@ -1,6 +1,18 @@
 package com.example.usermanager.model;
 
-public class User {
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "USERS")
+public class User implements Serializable {
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     private String email;
     private String displayName;
@@ -15,14 +27,8 @@ public class User {
         this.password = password;
     }
 
-    public User(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("user cannot be null");
-        }
-
-        this.email = user.email;
-        this.displayName = user.displayName;
-        this.password = user.password;
+    public Long getId() {
+        return id;
     }
 
     public String getEmail() {
