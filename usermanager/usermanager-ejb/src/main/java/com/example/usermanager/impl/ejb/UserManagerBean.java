@@ -7,29 +7,20 @@ import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 @Stateless
 @Remote(UserManager.class)
 public class UserManagerBean implements UserManager {
 
-    @PersistenceUnit
-    private EntityManagerFactory emf;
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public List<User> getAllUsers() {
-        EntityManager em = null;
-        try {
-            em = emf.createEntityManager();
-            TypedQuery<User> query = em.createNamedQuery("User.getAllUsers", User.class);
-            return query.getResultList();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+        TypedQuery<User> query = em.createNamedQuery("User.getAllUsers", User.class);
+        return query.getResultList();
     }
 
     @Override
@@ -38,21 +29,13 @@ public class UserManagerBean implements UserManager {
             throw new IllegalArgumentException("email cannot be null");
         }
 
-        EntityManager em = null;
-        try {
-            em = emf.createEntityManager();
-            TypedQuery<User> query = em.createNamedQuery("User.findUserByEmail", User.class);
-            query.setParameter("email", email);
-            List<User> list = query.getResultList();
-            if (list.isEmpty()) {
-                return null;
-            } else {
-                return list.get(0);
-            }
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+        TypedQuery<User> query = em.createNamedQuery("User.findUserByEmail", User.class);
+        query.setParameter("email", email);
+        List<User> list = query.getResultList();
+        if (list.isEmpty()) {
+            return null;
+        } else {
+            return list.get(0);
         }
     }
 
@@ -61,24 +44,14 @@ public class UserManagerBean implements UserManager {
         if (user == null) {
             throw new IllegalArgumentException("user cannot be null.");
         }
-        
+
         if (findUserByEmail(user.getEmail()) != null) {
             throw new UserException("A user with the email address already exists.");
         }
 
-        EntityManager em = null;
-        try {
-            em = emf.createEntityManager();
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
-            return user;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-                
+        em.persist(user);
+        
+        return user;
     }
-    
+
 }
