@@ -41,6 +41,10 @@ public class CreateUserBean {
     }
 
     public void checkAvailability() {
+        if (email == null) {
+            return;
+        }
+
         User user = InMemoryUserManager.getInstance().findUserByEmail(email);
         FacesMessage msg;
         if (user == null) {
