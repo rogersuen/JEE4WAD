@@ -1,8 +1,6 @@
 package com.example.usermanager.web;
 
 import com.example.usermanager.model.User;
-import com.example.usermanager.model.UserException;
-import com.example.usermanager.model.impl.mem.InMemoryUserManager;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -52,26 +50,11 @@ public class CreateUserBean {
             return;
         }
 
-        EntityManager em = null;
-        boolean found = false;
-        try {
-            em = emf.createEntityManager();
-            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
-            query.setParameter("email", email);
-            if (!query.getResultList().isEmpty()) {
-                found = true;
-            }
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-
         FacesMessage msg;
-        if (found) {
-            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "The email is NOT available.", null);
-        } else {
+        if (isEmailAvailable(email)) {
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "The email is available.", null);
+        } else {
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "The email is NOT available.", null);
         }
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -79,16 +62,21 @@ public class CreateUserBean {
 
     public String createUser() {
         User user = new User(email, displayName, password);
+        if (!isEmailAvailable(email)) {
+            FacesMessage msg = new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR,
+                    "A user with the email address already exists.",
+                    null);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+
         EntityManager em = null;
         try {
             em = emf.createEntityManager();
             em.getTransaction().begin();
             em.persist(user);
             em.getTransaction().commit();
-        } catch (UserException ue) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, ue.getMessage(), null);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            return null;
         } finally {
             if (em != null) {
                 em.close();
@@ -96,5 +84,19 @@ public class CreateUserBean {
         }
 
         return "BrowseUsers?faces-redirect=true";
+    }
+
+    private boolean isEmailAvailable(String email) {
+        EntityManager em = null;
+        try {
+            em = emf.createEntityManager();
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+            query.setParameter("email", email);
+            return query.getResultList().isEmpty();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 }
