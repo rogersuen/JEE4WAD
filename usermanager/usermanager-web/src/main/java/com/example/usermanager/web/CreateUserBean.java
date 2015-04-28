@@ -13,8 +13,7 @@ import javax.faces.context.FacesContext;
 public class CreateUserBean {
     
     private String email;
-    private String firstName;
-    private String lastName;
+    private String displayName;
     private String password;
 
     public String getEmail() {
@@ -22,23 +21,15 @@ public class CreateUserBean {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = (email == null ? null : email.trim().toLowerCase());
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getPassword() {
@@ -50,7 +41,7 @@ public class CreateUserBean {
     }
     
     public String createUser() {
-        User user = new User(email, firstName, lastName, password);
+        User user = new User(email, displayName, password);
         try {
             InMemoryUserManager.getInstance().addUser(user);
         } catch (UserException ue) {

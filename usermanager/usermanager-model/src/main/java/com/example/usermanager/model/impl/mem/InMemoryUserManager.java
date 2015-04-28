@@ -18,7 +18,6 @@ public class InMemoryUserManager implements UserManager {
                 new User(
                         "admin@example.com",
                         "admin",
-                        "admin",
                         null));
     }
 
@@ -35,7 +34,7 @@ public class InMemoryUserManager implements UserManager {
         } else {
             List<User> ret = new ArrayList<>(users.size());
             for (User user : users.values()) {
-                ret.add(new User(user));
+                ret.add(user);
             }
             return ret;
         }
@@ -51,7 +50,7 @@ public class InMemoryUserManager implements UserManager {
         if (user == null) {
             return null;
         } else {
-            return new User(user);
+            return user;
         }
     }
 
@@ -65,8 +64,8 @@ public class InMemoryUserManager implements UserManager {
             throw new UserException("A user with the email address already exists.");
         }
 
-        users.put(user.getEmail(), new User(user));
+        users.put(user.getEmail(), user);
 
-        return new User(users.get(user.getEmail()));
+        return user;
     }
 }

@@ -1,19 +1,17 @@
 package com.example.usermanager.model;
 
 public class User {
-    
+
     private String email;
-    private String firstName;
-    private String lastName;
+    private String displayName;
     private String password;
 
     public User() {
     }
 
-    public User(String email, String firstName, String lastName, String password) {
+    public User(String email, String displayName, String password) {
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.displayName = displayName;
         this.password = password;
     }
 
@@ -23,8 +21,7 @@ public class User {
         }
 
         this.email = user.email;
-        this.firstName = user.firstName;
-        this.lastName = user.lastName;
+        this.displayName = user.displayName;
         this.password = user.password;
     }
 
@@ -33,23 +30,15 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = (email == null ? null : email.trim().toLowerCase());
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getPassword() {
