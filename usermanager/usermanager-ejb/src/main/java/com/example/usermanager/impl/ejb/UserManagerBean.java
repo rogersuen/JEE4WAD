@@ -6,10 +6,13 @@ import com.example.usermanager.model.UserManager;
 import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+@WebService
 @Stateless
 @Remote(UserManager.class)
 public class UserManagerBean implements UserManager {
@@ -17,12 +20,14 @@ public class UserManagerBean implements UserManager {
     @PersistenceContext
     private EntityManager em;
 
+    @WebMethod
     @Override
     public List<User> getAllUsers() {
         TypedQuery<User> query = em.createNamedQuery("User.getAllUsers", User.class);
         return query.getResultList();
     }
 
+    @WebMethod
     @Override
     public User findUserByEmail(String email) {
         if (email == null) {
