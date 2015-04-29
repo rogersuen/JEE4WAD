@@ -27,7 +27,7 @@
                 <div class="col-sm-4">
                     <h:inputText
                         id="email"
-                        value="#{createUserBean.email}"
+                        value="#{createUserBean.user.email}"
                         maxlength="80"
                         p:placeholder="Email"
                         styleClass="form-control">
@@ -49,7 +49,7 @@
                 <div class="col-sm-4">              
                     <h:inputText
                         id="displayName"
-                        value="#{createUserBean.displayName}"
+                        value="#{createUserBean.user.displayName}"
                         maxlength="40"
                         p:placeholder="Display Name"
                         styleClass="form-control">
@@ -61,7 +61,7 @@
                 <div class="col-sm-4">              
                     <h:inputSecret
                         id="password"
-                        value="#{createUserBean.password}"
+                        value="#{createUserBean.user.password}"
                         maxlength="40"
                         p:placeholder="Password"
                         styleClass="form-control">
