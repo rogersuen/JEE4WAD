@@ -8,6 +8,8 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Named
 @RequestScoped
@@ -16,8 +18,15 @@ public class CreateUserBean {
     @EJB
     private UserManager userManager;
 
+    @NotNull(message = "Email is required.")
+    @Size(min = 6, max = 40, message = "Email is invalid.")
     private String email;
+
+    @NotNull(message = "Display name is required.")
+    @Size(min = 2, max = 40, message = "Display name must be between {min} - {max} characters long.")
     private String displayName;
+
+    @Size(min = 2, max = 40, message = "Password must be between {min} - {max} characters long.")
     private String password;
 
     public String getEmail() {

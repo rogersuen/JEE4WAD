@@ -28,11 +28,9 @@
                     <h:inputText
                         id="email"
                         value="#{createUserBean.email}"
-                        required="true"
                         maxlength="80"
                         p:placeholder="Email"
                         styleClass="form-control">
-                        <f:validateLength minimum="6" maximum="80"/>
                     </h:inputText>
                 </div>
             </div>
@@ -52,11 +50,9 @@
                     <h:inputText
                         id="displayName"
                         value="#{createUserBean.displayName}"
-                        required="true"
                         maxlength="40"
                         p:placeholder="Display Name"
                         styleClass="form-control">
-                        <f:validateLength minimum="2" maximum="40"/>
                     </h:inputText>
                 </div>
             </div>
@@ -69,7 +65,6 @@
                         maxlength="40"
                         p:placeholder="Password"
                         styleClass="form-control">
-                        <f:validateLength minimum="6" maximum="40"/>
                     </h:inputSecret>
                 </div>
             </div>
